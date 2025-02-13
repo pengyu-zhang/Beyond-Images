@@ -7,9 +7,7 @@ Beyond Images - Is a Thousand Words Worth One Picture? A Framework for Multi-Mod
 </div>
 <br><br>
 
-Multi-Modal Knowledge Graphs (MMKGs) enhance entity representations by incorporating text, images, audio, and video, offering a more comprehensive understanding of each entity. Images are particularly valuable among these modalities due to their rich content and the ease of large-scale collection. However, many images are noisy or weakly related to their entities, leading to semantic information loss. Sparse-semantic images (e.g., brand logos) provide limited meaningful features, while rich-semantic images (e.g., abstract artwork) contain complex semantics that are difficult to capture, raising concerns about whether images consistently improve performance.
-
-To address this, we generate meaningful textual descriptions from images to better capture the semantic relationship between the image and its entity. By incorporating these text-based image representations, we reduce dependence on low-quality visuals and achieve a 2%–5% improvement in Hit@1 for link prediction across three MMKG datasets. Additionally, our automated framework enables large-scale image retrieval while minimizing the need for labor-intensive creation and manual filtering. In some cases, replacing images with textual descriptions leads to more efficient and compact representations, highlighting the important role of language in MMKGs.
+Multi-Modal Knowledge Graphs (MMKGs) enhance entity representations by incorporating text, images, audio, and video, offering a more comprehensive understanding of each entity. Among these modalities, images are especially valuable due to their rich content and the ease of large-scale collection. However, many images are semantically unclear, making it challenging for the models to effectively use them to enhance entity representations. To address this, we present the Beyond Images framework, which generates textual descriptions for entity images, which more effectively capture their semantic relevance to the associated entity. By adding textual descriptions, we achieve up to 5\% improvement in Hits@1 for link prediction across three MMKG datasets. Furthermore, our scalable framework reduces the need for manual construction by automatically extending three MMKG datasets with additional images and their descriptions. Our work highlights the importance of textual descriptions for MMKGs.
 
 ## Usage
 
@@ -28,7 +26,7 @@ pip install -r requirements.txt
 
 | Download link                                                | Size |
 | ------------------------------------------------------------ | ----------------- |
-| Our Dataset(Due to the anonymity requirement of the review process, the dataset will be made available after the review is complete.) | 127 MB            |
+| Our Dataset(Due to the anonymity requirement of the review process, the dataset will be made available soon.) | 127 MB            |
 
 ### 3. Reproduce the experiments
 
