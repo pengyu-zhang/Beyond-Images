@@ -18,7 +18,7 @@ Please follow the instructions next to reproduce our experiments, and to train a
 Creating a new environment (e.g. with `conda`) is recommended. Use `requirements.txt` to install the dependencies:
 
 ```
-conda create -n beyondimages311 -y python=3.11 && conda activate beyondimagesl311
+conda create -n beyondimages311 -y python=3.11 && conda activate beyondimages311
 pip install -r requirements.txt
 ```
 
