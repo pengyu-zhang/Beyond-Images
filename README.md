@@ -26,7 +26,8 @@ pip install -r requirements.txt
 
 | Download link                                                | Size |
 | ------------------------------------------------------------ | ----------------- |
-| Our Dataset(Due to the anonymity requirement of the review process, the dataset will be made available soon.) | 127 MB            |
+| Our full dataset(Due to the anonymity requirement of the review process, the dataset will be made available soon.) | 127 MB            |
+| Small example dataset: img_text_summary.zip | 25 MB            |
 
 ### 3. Reproduce the experiments
 
