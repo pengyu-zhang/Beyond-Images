@@ -1,5 +1,7 @@
 # Beyond-Images
-Beyond Images - Is a Thousand Words Worth One Picture? A Framework for Multi-Modal Knowledge Graph Dataset Enrichment
+Is a Thousand Words Worth One Picture?
+
+Beyond Images - A Framework for Multi-Modal Knowledge Graph Dataset Enrichment
 
 # Supplementary Material
 
