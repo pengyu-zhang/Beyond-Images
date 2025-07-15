@@ -1,6 +1,10 @@
 # Beyond-Images
 Beyond Images - Is a Thousand Words Worth One Picture? A Framework for Multi-Modal Knowledge Graph Dataset Enrichment
 
+# Supplementary Material
+
+[Supplementary Material](https://github.com/pengyu-zhang/Beyond-Images/blob/main/Supplementary_Material.pdf)
+
 <br><br>
 <div align="center">
 <img src="fig.png" width="800" />
