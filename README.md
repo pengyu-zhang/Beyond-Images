@@ -9,7 +9,7 @@ Beyond Images - A Framework for Multi-Modal Knowledge Graph Dataset Enrichment
 
 <br><br>
 <div align="center">
-<img src="fig.png" width="800" />
+<img src="fig11.png" width="800" />
 </div>
 <br><br>
 
@@ -42,7 +42,7 @@ bash run.sh
 ```
 <br><br>
 <div align="center">
-<img src="fig2.png" width="700" />
+<img src="fig22.png" width="700" />
 </div>
 <br><br>
 
