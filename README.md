@@ -9,11 +9,11 @@ Beyond Images - A Framework for Multi-Modal Knowledge Graph Dataset Enrichment
 
 <br><br>
 <div align="center">
-<img src="fig1.png" width="800" />
+<img src="fig.png" width="800" />
 </div>
 <br><br>
 
-Multi-Modal Knowledge Graphs (MMKGs) enrich entity representations by incorporating diverse modalities such as text and images. While images offer valuable semantic information, many are semantically ambiguous, making it difficult to align them with the corresponding entities. To address this, we propose Beyond Images, an automated framework that enhances MMKGs by generating textual descriptions from entity-linked images and summarizing them using LLMs. Our framework includes: (1) automatic retrieval of new images, (2) image-to-text models to convert semantically ambiguous images into informative textual descriptions, and (3) LLM-based fusion to summarize multiple descriptions and filter out irrelevant or noisy semantic content. Experiments on three public MMKG datasets with four representative models show that our method improves Hits@1 by up to 7% for link prediction. Our findings highlight the importance of language as a semantic bridge in MMKGs, especially when visual content is noisy or insufficiently informative.
+Multi-Modal Knowledge Graphs (MMKGs) enrich entity representations by incorporating diverse modalities such as text and images. While images offer valuable semantic information, many are semantically ambiguous, making it difficult to align them with the corresponding entities. To address this, we propose Beyond Images, an automated framework that enhances MMKGs by generating textual descriptions from entity-linked images and summarizing them using LLMs. Our framework includes: (1) automatic retrieval of additional images, (2) image-to-text models that convert ambiguous visual content into informative descriptions, and (3) LLM-based fusion to summarize multiple descriptions and filter out irrelevant or noisy semantic content. Experiments on three public MMKG datasets using four representative models demonstrate consistent improvements, with up to a 7% gain in Hits@1 for link prediction. These results highlight the value of language as a semantic bridge in MMKGs, particularly when visual inputs are noisy.
 
 ## Usage
 
