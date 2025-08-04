@@ -9,7 +9,7 @@ Beyond Images - A Framework for Multi-Modal Knowledge Graph Dataset Enrichment
 
 <br><br>
 <div align="center">
-<img src="fig.png" width="800" />
+<img src="fig1.png" width="800" />
 </div>
 <br><br>
 
