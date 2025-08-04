@@ -32,7 +32,7 @@ pip install -r requirements.txt
 
 | Download link                                                | Size |
 | ------------------------------------------------------------ | ----------------- |
-| Our full dataset (https://drive.google.com/file/d/1EZ7l3xktCBAwsCM7jBrWiKuS2QKDkVs_/view?usp=sharing) | 22 GB (includes raw images)            |
+| Our full dataset (https://drive.google.com/drive/folders/1EN5gHaLY_-H-SQ_H0SgWco5DCCzgSbrq?usp=sharing) | 23 GB (includes raw images)            |
 | Small example dataset: img_text_summary.zip | 4.16 MB            |
 
 ### 3. Reproduce the experiments
