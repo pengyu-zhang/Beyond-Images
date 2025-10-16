@@ -7,6 +7,10 @@ Beyond Images - A Framework for Multi-Modal Knowledge Graph Dataset Enrichment
 
 [Supplementary Material](https://github.com/pengyu-zhang/Beyond-Images/blob/main/Supplementary_Material.pdf)
 
+# Video Demo
+
+[Video Demo](https://github.com/pengyu-zhang/Beyond-Images/blob/main/video%20demo/video%20demo.mp4)
+
 <br><br>
 <div align="center">
 <img src="fig.png" width="800" />
