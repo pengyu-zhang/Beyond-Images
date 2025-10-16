@@ -36,7 +36,7 @@ pip install -r requirements.txt
 
 | Download link                                                | Size |
 | ------------------------------------------------------------ | ----------------- |
-| Our full dataset (https://drive.google.com/drive/folders/1EN5gHaLY_-H-SQ_H0SgWco5DCCzgSbrq?usp=sharing) | 23 GB (includes raw images)            |
+| Our full datasets contain many images (~23 GB) and cannot be hosted on GitHub; we will release them after the paper is accepted, and have temporarily uploaded a sample folder with a small subset. | 23 GB (includes raw images)            |
 | Small example dataset: img_text_summary.zip | 4.16 MB            |
 
 ### 3. Reproduce the experiments
