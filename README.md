@@ -23,8 +23,11 @@ Beyond Images - A Framework for Multi-Modal Knowledge Graph Dataset Enrichment
            width="800" height="HEIGHT"
            clip-path="url(#rounded)"
            preserveAspectRatio="xMidYMid slice"/>
+    <rect x="0" y="0" width="800" height="HEIGHT" rx="16" ry="16"
+          fill="none" stroke="#e5e7eb" stroke-width="1"/>
   </svg>
 </div>
+
 
 
 Multi-Modal Knowledge Graphs (MMKGs) enrich entity representations by incorporating diverse modalities such as text and images. While images offer valuable semantic information, many are semantically ambiguous, making it difficult to align them with the corresponding entities. To address this, we propose Beyond Images, an automated framework that enhances MMKGs by generating textual descriptions from entity-linked images and summarizing them using LLMs. Our framework includes: (1) automatic retrieval of additional images, (2) image-to-text models that convert ambiguous visual content into informative descriptions, and (3) LLM-based fusion to summarize multiple descriptions and filter out irrelevant or noisy semantic content. Experiments on three public MMKG datasets using four representative models demonstrate consistent improvements, with up to a 7% gain in Hits@1 for link prediction. These results highlight the value of language as a semantic bridge in MMKGs, particularly when visual inputs are noisy.
