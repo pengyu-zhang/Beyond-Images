@@ -14,6 +14,10 @@
   <img src="fig/fig1.png" alt="Beyond-Images pipeline overview" width="780">
 </div>
 
+## Resources
+- [Supplementary Material](https://github.com/pengyu-zhang/Beyond-Images/blob/main/Supplementary_Material.pdf)
+- [Video Demo](https://github.com/pengyu-zhang/Beyond-Images/blob/main/video%20demo/video%20demo.mp4)
+
 ## Table of Contents
 - [Overview](#overview)
 - [Highlights](#highlights)
@@ -114,8 +118,4 @@ Adjust `run.sh` for your cluster (GPU type, walltime, environment modules). Indi
 <div align="center">
   <img src="fig/fig5.png" alt="Qualitative examples and error analysis" width="780">
 </div>
-
-## Resources
-- [Supplementary Material](https://github.com/pengyu-zhang/Beyond-Images/blob/main/Supplementary_Material.pdf)
-- [Video Demo](https://github.com/pengyu-zhang/Beyond-Images/blob/main/video%20demo/video%20demo.mp4)
 
