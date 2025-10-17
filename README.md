@@ -8,8 +8,6 @@
   </a>
   <a href="https://github.com/pengyu-zhang/Beyond-Images/blob/main/video%20demo/video%20demo.mp4">
     <img alt="Video Demo" src="https://img.shields.io/badge/Video-Demo-ff69b4?style=flat-square">
-  </a>
-  <img alt="Status" src="https://img.shields.io/badge/Status-Research%20Prototype-lightgrey?style=flat-square">
 </p>
 
 <div align="center">
@@ -44,7 +42,7 @@ In our experiments, Beyond-Images lifts link prediction performance by up to **+
 - **Plug-and-play enrichment**: Integrates seamlessly with existing MMKG models without requiring architectural changes.
 - **Noise-aware fusion**: Uses LLM reasoning to reconcile conflicting captions and discard off-topic content.
 - **Scalable pipeline**: Automates retrieval, captioning, summarisation, and embedding generation for millions of images.
-- **Demonstrated gains**: Consistent performance improvements across FB15k-237, DB15K, and MKG benchmarks.
+- **Demonstrated gains**: Consistent performance improvements across three benchmarks.
 
 ## Repository Structure
 ```text
@@ -60,7 +58,7 @@ In our experiments, Beyond-Images lifts link prediction performance by up to **+
 ## Getting Started
 
 ### Prerequisites
-- Python 3.11 (recommend managing environments with Conda or mamba)
+- Python 3.11 (recommend managing environments with Conda)
 - CUDA-enabled GPU for large-scale captioning and model fine-tuning
 - Access to the required MMKG datasets (see [Data](#data))
 
@@ -121,18 +119,3 @@ Adjust `run.sh` for your cluster (GPU type, walltime, environment modules). Indi
 - [Supplementary Material](https://github.com/pengyu-zhang/Beyond-Images/blob/main/Supplementary_Material.pdf)
 - [Video Demo](https://github.com/pengyu-zhang/Beyond-Images/blob/main/video%20demo/video%20demo.mp4)
 
-## Citation
-If you find this repository useful, please cite our work (BibTeX pending public release).
-
-```
-@inproceedings{beyond2025images,
-  title     = {Beyond-Images: Multi-Modal Knowledge Graph Dataset Enrichment},
-  author    = {Zhang, Pengyu and collaborators},
-  booktitle = {Proceedings of the TBD Conference},
-  year      = {2025},
-  note      = {Preprint}
-}
-```
-
-## Contact
-For questions or collaborations, please open an issue or reach out to the maintainers via the email addresses listed in the paper.
