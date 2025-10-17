@@ -47,7 +47,7 @@ pip install -r requirements.txt
 
 <br><br>
 <div align="center">
-<img src="fig/fig3.png" width="700" />
+<img src="fig/fig3.png" width="500" />
 </div>
 <br><br>
 
