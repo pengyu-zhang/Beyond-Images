@@ -1,71 +1,138 @@
-# Beyond-Images
-Are a Thousand Words Better Than a Single Picture?
+# Beyond-Images: Multi-Modal Knowledge Graph Dataset Enrichment
 
-Beyond Images - A Framework for Multi-Modal Knowledge Graph Dataset Enrichment
+<p align="center"><em>Are a thousand words better than a single picture?</em></p>
 
-# Supplementary Material
+<p align="center">
+  <a href="https://github.com/pengyu-zhang/Beyond-Images/blob/main/Supplementary_Material.pdf">
+    <img alt="Supplementary" src="https://img.shields.io/badge/Supplementary-PDF-blue?style=flat-square">
+  </a>
+  <a href="https://github.com/pengyu-zhang/Beyond-Images/blob/main/video%20demo/video%20demo.mp4">
+    <img alt="Video Demo" src="https://img.shields.io/badge/Video-Demo-ff69b4?style=flat-square">
+  </a>
+  <img alt="Status" src="https://img.shields.io/badge/Status-Research%20Prototype-lightgrey?style=flat-square">
+</p>
 
-[Supplementary Material](https://github.com/pengyu-zhang/Beyond-Images/blob/main/Supplementary_Material.pdf)
-
-# Video Demo
-
-[Video Demo](https://github.com/pengyu-zhang/Beyond-Images/blob/main/video%20demo/video%20demo.mp4)
-
-<br><br>
 <div align="center">
-<img src="fig/fig1.png" width="700" />
+  <img src="fig/fig1.png" alt="Beyond-Images pipeline overview" width="780">
 </div>
-<br><br>
 
-Multi-Modal Knowledge Graphs (MMKGs) enrich entity representations by incorporating diverse modalities such as text and images. While images offer valuable semantic information, many are semantically ambiguous, making it difficult to align them with the corresponding entities. To address this, we propose Beyond Images, an automated framework that enhances MMKGs by generating textual descriptions from entity-linked images and summarizing them using LLMs. Our framework includes: (1) automatic retrieval of additional images, (2) image-to-text models that convert ambiguous visual content into informative descriptions, and (3) LLM-based fusion to summarize multiple descriptions and filter out irrelevant or noisy semantic content. Experiments on three public MMKG datasets using four representative models demonstrate consistent improvements, with up to a 7% gain in Hits@1 for link prediction. These results highlight the value of language as a semantic bridge in MMKGs, particularly when visual inputs are noisy.
+## Table of Contents
+- [Overview](#overview)
+- [Highlights](#highlights)
+- [Repository Structure](#repository-structure)
+- [Getting Started](#getting-started)
+- [Data](#data)
+- [Pipeline](#pipeline)
+- [Reproducing Results](#reproducing-results)
+- [Results](#results)
+- [Resources](#resources)
+- [Citation](#citation)
+- [Contact](#contact)
 
-<br><br>
-<div align="center">
-<img src="fig/fig2.png" width="700" />
-</div>
-<br><br>
+## Overview
+**Beyond-Images** is an automated framework that augments multi-modal knowledge graphs (MMKGs) with textual descriptors distilled from images. Many MMKG images are ambiguous or noisy; we bridge this gap by generating image-grounded descriptions, summarising them with large language models (LLMs), and filtering irrelevant content before reinjecting the enriched semantics back into the graph.
 
-## Usage
+The framework supports:
+- automatic retrieval of additional images for each entity,
+- image-to-text captioning tailored for noisy visual inputs,
+- LLM-based summarisation and denoising to yield concise, entity-aligned descriptions,
+- downstream evaluation on three public MMKG benchmarks with four representative models.
 
-Please follow the instructions next to reproduce our experiments, and to train a model with your own data.
+In our experiments, Beyond-Images lifts link prediction performance by up to **+7% Hits@1**, underscoring the value of language as a semantic bridge when visual information is unreliable.
 
-### 1. Install the requirements
+## Highlights
+- **Plug-and-play enrichment**: Integrates seamlessly with existing MMKG models without requiring architectural changes.
+- **Noise-aware fusion**: Uses LLM reasoning to reconcile conflicting captions and discard off-topic content.
+- **Scalable pipeline**: Automates retrieval, captioning, summarisation, and embedding generation for millions of images.
+- **Demonstrated gains**: Consistent performance improvements across FB15k-237, DB15K, and MKG benchmarks.
 
-Creating a new environment (e.g. with `conda`) is recommended. Use `requirements.txt` to install the dependencies:
-
+## Repository Structure
+```text
+.
+|-- code/                # Source code for data processing, captioning, summarisation, and evaluation
+|-- dataset/             # Sample data artefacts (full release to follow paper acceptance)
+|-- fig/                 # Figures used in the paper and README
+|-- video demo/          # Project walkthrough video
+|-- run.sh               # Example SLURM script orchestrating the pipeline
+`-- requirements.txt     # Python dependencies (tested with Python 3.11)
 ```
-conda create -n beyondimages311 -y python=3.11 && conda activate beyondimages311
+
+## Getting Started
+
+### Prerequisites
+- Python 3.11 (recommend managing environments with Conda or mamba)
+- CUDA-enabled GPU for large-scale captioning and model fine-tuning
+- Access to the required MMKG datasets (see [Data](#data))
+
+### Installation
+```bash
+conda create -n beyondimages311 -y python=3.11
+conda activate beyondimages311
 pip install -r requirements.txt
 ```
 
-### 2. Download the data
+If your workflow relies on the SLURM example in `run.sh`, adapt the environment activation lines to your cluster configuration.
 
-| Download link                                                | Size |
-| ------------------------------------------------------------ | ----------------- |
-| Our full datasets contain many images (~23 GB) and cannot be hosted on GitHub; we will release them after the paper is accepted, and have temporarily uploaded a sample folder with a small subset. | 23 GB (includes raw images)            |
-| Small example dataset: img_text_summary.zip | 4.16 MB            |
+## Data
 
-<br><br>
+| Resource | Size | Notes |
+| --- | --- | --- |
+| Full Beyond-Images datasets | ~23 GB | Contains raw images and generated descriptions. Public release planned after paper acceptance. |
+| Sample subset (`dataset/img_text_summary.zip`) | 4.16 MB | Minimal example for reproducing the pipeline locally. |
+
+Update the paths in the scripts under `code/` to point to your dataset location. For large-scale experiments, ensure sufficient storage for intermediate captions and embeddings.
+
+## Pipeline
 <div align="center">
-<img src="fig/fig3.png" width="500" />
+  <img src="fig/fig2.png" alt="Beyond-Images pipeline stages" width="780">
 </div>
-<br><br>
 
-### 3. Reproduce the experiments
+1. **Image Retrieval** - Expand entity coverage with web-scale image search.
+2. **Caption Generation** - Produce dense, entity-aware descriptions via BLIP-2 and related models.
+3. **LLM Fusion** - Summarise multiple captions, remove noise, and align with KG context.
+4. **Embedding & Integration** - Convert final descriptions to text embeddings and feed them to MMKG models.
+
+<div align="center">
+  <img src="fig/fig3.png" alt="Example entity before and after enrichment" width="520">
+</div>
+
+## Reproducing Results
+
+1. Configure dataset locations in the scripts under `code/`.
+2. Launch the end-to-end pipeline (example SLURM command shown below):
+   ```bash
+   bash run.sh
+   ```
+3. Inspect generated captions, summaries, and embeddings under the designated output folders.
+4. Train and evaluate your chosen MMKG model using the enriched data.
+
+Adjust `run.sh` for your cluster (GPU type, walltime, environment modules). Individual pipeline stages can also be executed manually; see the script for ordering.
+
+## Results
+<div align="center">
+  <img src="fig/fig4.png" alt="Performance improvements on benchmark datasets" width="780">
+</div>
+
+<div align="center">
+  <img src="fig/fig5.png" alt="Qualitative examples and error analysis" width="780">
+</div>
+
+## Resources
+- [Supplementary Material](https://github.com/pengyu-zhang/Beyond-Images/blob/main/Supplementary_Material.pdf)
+- [Video Demo](https://github.com/pengyu-zhang/Beyond-Images/blob/main/video%20demo/video%20demo.mp4)
+
+## Citation
+If you find this repository useful, please cite our work (BibTeX pending public release).
 
 ```
-bash run.sh
+@inproceedings{beyond2025images,
+  title     = {Beyond-Images: Multi-Modal Knowledge Graph Dataset Enrichment},
+  author    = {Zhang, Pengyu and collaborators},
+  booktitle = {Proceedings of the TBD Conference},
+  year      = {2025},
+  note      = {Preprint}
+}
 ```
 
-<br><br>
-<div align="center">
-<img src="fig/fig4.png" width="700" />
-</div>
-<br><br>
-
-<br><br>
-<div align="center">
-<img src="fig/fig5.png" width="700" />
-</div>
-<br><br>
-
+## Contact
+For questions or collaborations, please open an issue or reach out to the maintainers via the email addresses listed in the paper.
