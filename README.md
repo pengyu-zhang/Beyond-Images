@@ -12,7 +12,7 @@ Beyond Images - A Framework for Multi-Modal Knowledge Graph Dataset Enrichment
 [Video Demo](https://github.com/pengyu-zhang/Beyond-Images/blob/main/video%20demo/video%20demo.mp4)
 
 <div align="center">
-  <svg width="800" height="450" viewBox="0 0 800 450" xmlns="http://www.w3.org/2000/svg">
+  <svg width="800" height="450" viewBox="120 120 800 450" xmlns="http://www.w3.org/2000/svg">
     <defs>
       <clipPath id="rounded">
         <rect x="0" y="0" width="800" height="450" rx="16" ry="16"/>
