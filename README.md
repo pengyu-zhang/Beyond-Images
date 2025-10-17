@@ -11,24 +11,19 @@ Beyond Images - A Framework for Multi-Modal Knowledge Graph Dataset Enrichment
 
 [Video Demo](https://github.com/pengyu-zhang/Beyond-Images/blob/main/video%20demo/video%20demo.mp4)
 
+<br><br>
 <div align="center">
-  <svg width="800" height="450" viewBox="120 120 800 450" xmlns="http://www.w3.org/2000/svg">
-    <defs>
-      <clipPath id="rounded">
-        <rect x="0" y="0" width="800" height="450" rx="16" ry="16"/>
-      </clipPath>
-    </defs>
-    <image href="fig.png"
-           width="800" height="450"
-           clip-path="url(#rounded)"
-           preserveAspectRatio="xMidYMid slice" />
-  </svg>
+<img src="fig/fig1.png" width="700" />
 </div>
-
-
-
+<br><br>
 
 Multi-Modal Knowledge Graphs (MMKGs) enrich entity representations by incorporating diverse modalities such as text and images. While images offer valuable semantic information, many are semantically ambiguous, making it difficult to align them with the corresponding entities. To address this, we propose Beyond Images, an automated framework that enhances MMKGs by generating textual descriptions from entity-linked images and summarizing them using LLMs. Our framework includes: (1) automatic retrieval of additional images, (2) image-to-text models that convert ambiguous visual content into informative descriptions, and (3) LLM-based fusion to summarize multiple descriptions and filter out irrelevant or noisy semantic content. Experiments on three public MMKG datasets using four representative models demonstrate consistent improvements, with up to a 7% gain in Hits@1 for link prediction. These results highlight the value of language as a semantic bridge in MMKGs, particularly when visual inputs are noisy.
+
+<br><br>
+<div align="center">
+<img src="fig/fig2.png" width="700" />
+</div>
+<br><br>
 
 ## Usage
 
@@ -50,14 +45,21 @@ pip install -r requirements.txt
 | Our full datasets contain many images (~23 GB) and cannot be hosted on GitHub; we will release them after the paper is accepted, and have temporarily uploaded a sample folder with a small subset. | 23 GB (includes raw images)            |
 | Small example dataset: img_text_summary.zip | 4.16 MB            |
 
+<br><br>
+<div align="center">
+<img src="fig/fig3.png" width="700" />
+</div>
+<br><br>
+
 ### 3. Reproduce the experiments
 
 ```
 bash run.sh
 ```
+
 <br><br>
 <div align="center">
-<img src="fig2.png" width="700" />
+<img src="fig/fig4.png" width="700" />
 </div>
 <br><br>
 
