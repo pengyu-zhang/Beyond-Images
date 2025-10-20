@@ -42,6 +42,7 @@ In our experiments, Beyond-Images lifts link prediction performance by up to **+
 - **Plug-and-play enrichment**: Integrates seamlessly with existing MMKG models without requiring architectural changes.
 - **Noise-aware fusion**: Uses LLM reasoning to reconcile conflicting captions and discard off-topic content.
 - **Scalable pipeline**: Automates retrieval, captioning, summarisation, and embedding generation for millions of images.
+- **Lightweight Interactive Validation Tool**: Inspired by the [CoT Curation Toolkit](https://github.com/caocongfeng/CoT_curation_toolkit), we also provide a lightweight interactive validation tool to support human auditing and feedback.
 - **Demonstrated gains**: Consistent performance improvements across three benchmarks.
 
 ## Repository Structure
