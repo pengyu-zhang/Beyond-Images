@@ -3,10 +3,10 @@
 <p align="center"><em>Are a thousand words better than a single picture?</em></p>
 
 <p align="center">
-  <a href="https://github.com/pengyu-zhang/Beyond-Images/blob/main/Supplementary_Material.pdf">
+  <a href="https://github.com/pengyu-zhang/Beyond-Images/blob/main/supplementary_material/Supplementary_Material.pdf">
     <img alt="Supplementary" src="https://img.shields.io/badge/Supplementary-PDF-blue?style=flat-square">
   </a>
-  <a href="https://github.com/pengyu-zhang/Beyond-Images/blob/main/video%20demo/video%20demo.mp4">
+  <a href="https://github.com/pengyu-zhang/Beyond-Images/blob/main/video_demo/video_demo.mp4">
     <img alt="Video Demo" src="https://img.shields.io/badge/Video-Demo-ff69b4?style=flat-square">
 </p>
 
@@ -117,6 +117,6 @@ Adjust `run.sh` for your cluster (GPU type, walltime, environment modules). Indi
 </div>
 
 ## Resources
-- [Supplementary Material](https://github.com/pengyu-zhang/Beyond-Images/blob/main/Supplementary_Material.pdf)
-- [Video Demo](https://github.com/pengyu-zhang/Beyond-Images/blob/main/video%20demo/video%20demo.mp4)
+- [Supplementary Material](https://github.com/pengyu-zhang/Beyond-Images/blob/main/supplementary_material/Supplementary_Material.pdf)
+- [Video Demo](https://github.com/pengyu-zhang/Beyond-Images/blob/main/video_demo/video_demo.mp4)
 
