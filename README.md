@@ -92,7 +92,7 @@ Update the paths in the scripts under `code/` to point to your dataset location.
 4. **Embedding & Integration** - Convert final descriptions to text embeddings and feed them to MMKG models.
 
 <div align="center">
-  <img src="fig/fig3.png" alt="Example entity before and after enrichment" width="520">
+  <img src="fig/fig3.png" alt="Example entity before and after enrichment" width="480">
 </div>
 
 ## Reproducing Results
