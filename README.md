@@ -76,7 +76,7 @@ If your workflow relies on the SLURM example in `run.sh`, adapt the environment 
 
 | Resource | Size | Notes |
 | --- | --- | --- |
-| Full Beyond-Images datasets | ~23 GB | Contains raw images and generated descriptions. Public release planned after paper acceptance. |
+| [Full Beyond-Images datasets](https://doi.org/10.5281/zenodo.14847095) | ~1 GB | Contains raw images url and generated descriptions. |
 | Sample subset (`dataset/img_text_summary.zip`) | 4.16 MB | Minimal example for reproducing the pipeline locally. |
 
 Update the paths in the scripts under `code/` to point to your dataset location. For large-scale experiments, ensure sufficient storage for intermediate captions and embeddings.
