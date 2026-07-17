@@ -68,11 +68,13 @@ header.top .links { margin-left: auto; display: flex; gap: 14px; align-items: ce
 }
 .chip.active { border-color: var(--accent); color: var(--accent); }
 
-main { display: grid; grid-template-columns: 250px 1.15fr 1.35fr; gap: 20px; align-items: start; }
+main { display: grid; grid-template-columns: 260px 1.15fr 1.35fr; gap: 20px; align-items: start; }
 @media (max-width: 1080px) { main { grid-template-columns: 1fr; } }
 .card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 14px; padding: 16px 18px; }
 .card h2 { font-size: .95rem; margin: 0 0 10px; }
+.card h2 .muted { font-weight: 500; }
 .muted { color: var(--fg-muted); font-size: .85rem; }
+.divider { border: 0; border-top: 1px solid var(--border); margin: 14px 0; }
 
 .btn {
   display: inline-flex; align-items: center; justify-content: center; gap: 6px;
@@ -95,23 +97,25 @@ main { display: grid; grid-template-columns: 250px 1.15fr 1.35fr; gap: 20px; ali
 .verdict-btn.v-mismatch.selected { border-color: var(--bad); color: var(--bad); font-weight: 700; }
 .verdict-btn.v-uncertain.selected { border-color: var(--unsure); color: var(--unsure); font-weight: 700; }
 
-select, textarea {
+select, textarea, input[type="text"] {
   width: 100%; background: var(--input-bg); color: var(--fg);
   border: 1px solid var(--input-border); border-radius: 10px; padding: 8px 10px; font: inherit; font-size: .88rem;
 }
 textarea { min-height: 92px; resize: vertical; }
 label.small { display: block; font-size: .78rem; font-weight: 600; color: var(--fg-muted); margin: 10px 0 4px; }
+.check-row { display: flex; align-items: center; gap: 8px; font-size: .84rem; margin: 8px 0; }
+.check-row input { width: auto; }
 
-.summary-box {
-  background: var(--input-bg); border: 1px solid var(--input-border); border-radius: 10px;
-  padding: 12px 14px; font-size: .92rem; max-height: 300px; overflow-y: auto;
-}
-.cap-list { list-style: none; margin: 8px 0 0; padding: 0; max-height: 260px; overflow-y: auto; }
+#summaryEdit { min-height: 190px; font-size: .92rem; }
+.cap-list { list-style: none; margin: 8px 0 0; padding: 0; max-height: 230px; overflow-y: auto; }
 .cap-list li { padding: 7px 10px; border-bottom: 1px solid var(--border); font-size: .84rem; }
 .cap-list li:last-child { border-bottom: 0; }
 .cap-list .cap-id { color: var(--fg-muted); font-size: .74rem; display: block; }
 
 .gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; }
+.gallery-head { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 10px; }
+.gallery-head h2 { margin: 0; }
+.gallery-head .check-row { margin: 0 0 0 auto; }
 .tile { position: relative; }
 .tile .imgbox {
   position: relative; border-radius: 12px; overflow: hidden; border: 1px solid var(--input-border);
@@ -187,7 +191,10 @@ kbd {
         <button class="btn secondary" id="prevBtn">← Prev</button>
         <button class="btn secondary" id="nextBtn">Next →</button>
       </div>
-      <button class="btn" id="saveNextBtn">Save &amp; Next</button>
+      <div class="btn-row">
+        <button class="btn" id="saveBtn">Save</button>
+        <button class="btn" id="saveNextBtn">Save &amp; Next</button>
+      </div>
       <div class="verdict-group" id="verdictGroup">
         <button class="verdict-btn v-match" data-verdict="match">✔ Match <span class="key">A</span></button>
         <button class="verdict-btn v-mismatch" data-verdict="mismatch">✘ Mismatch <span class="key">D</span></button>
@@ -204,25 +211,60 @@ kbd {
       </div>
       <label class="small" for="notesArea">Notes</label>
       <textarea id="notesArea" placeholder="Add brief rationale or evidence..."></textarea>
-      <div style="margin-top:14px; display:flex; flex-direction:column; gap:8px">
-        <button class="btn secondary" id="exportBtn">⬇ Export curation JSON</button>
+
+      <hr class="divider">
+      <label class="small" for="jumpSel">Quick jump <kbd>G</kbd></label>
+      <select id="jumpSel"></select>
+      <label class="small" for="annotatorInput">Annotator (optional)</label>
+      <input type="text" id="annotatorInput" placeholder="Your name or id">
+      <div class="check-row">
+        <input type="checkbox" id="autoSaveChk" checked>
+        <label for="autoSaveChk">Auto-save when navigating</label>
+      </div>
+
+      <hr class="divider">
+      <div style="display:flex; flex-direction:column; gap:8px">
+        <button class="btn secondary" id="exportModBtn">⬇ Export modified only</button>
+        <button class="btn secondary" id="exportAllBtn">⬇ Export full curated dataset</button>
         <button class="btn secondary" id="resetBtn">Reset demo</button>
       </div>
       <p class="muted" style="margin-bottom:0; margin-top:14px">
         Shortcuts: <kbd>←</kbd><kbd>→</kbd> navigate · <kbd>A</kbd><kbd>D</kbd><kbd>U</kbd> verdict ·
-        <kbd>Ctrl</kbd>+<kbd>S</kbd> save
+        <kbd>Ctrl</kbd>+<kbd>S</kbd> save · <kbd>Ctrl</kbd>+<kbd>Enter</kbd> save &amp; next · <kbd>G</kbd> jump
       </p>
     </section>
 
     <section class="card">
-      <h2>Fused Summary <span class="muted" style="font-weight:500">(LLM Semantic Fusion output)</span></h2>
-      <div class="summary-box" id="summaryBox"></div>
-      <h2 style="margin-top:16px">Per-image Captions <span class="muted" style="font-weight:500">(Semantic Generation output)</span></h2>
+      <h2>Fused Summary <span class="muted">(LLM Semantic Fusion output — editable)</span></h2>
+      <textarea id="summaryEdit" placeholder="No description available."></textarea>
+      <p class="muted" id="charCount" style="margin:6px 0 0"></p>
+
+      <hr class="divider">
+      <h2>Per-image Captions <span class="muted">(Semantic Generation output)</span></h2>
       <ul class="cap-list" id="capList"></ul>
+
+      <hr class="divider">
+      <div style="display:flex; align-items:center; gap:10px">
+        <h2 style="margin:0; flex:1">LLM Assist</h2>
+        <select id="llmModelSel" style="width:auto; min-width:170px">
+          <option>None</option>
+          <option>GPT-4o</option>
+          <option>Claude 3.5 Sonnet</option>
+          <option>Gemini 1.5 Pro</option>
+        </select>
+      </div>
+      <textarea id="llmOutput" style="margin-top:8px" placeholder="Paste or write the generated description here..."></textarea>
+      <p class="muted" style="margin:6px 0 0">Staging area for model-assisted judging — no API calls are made in this demo.</p>
     </section>
 
     <section class="card">
-      <h2 id="galleryTitle">Images</h2>
+      <div class="gallery-head">
+        <h2 id="galleryTitle">Images</h2>
+        <div class="check-row">
+          <input type="checkbox" id="showRemovedChk" checked>
+          <label for="showRemovedChk">Show removed</label>
+        </div>
+      </div>
       <div class="gallery" id="gallery"></div>
     </section>
   </main>
@@ -241,22 +283,38 @@ kbd {
 (function () {
   "use strict";
   const DATA = window.DEMO_DATA.entities;
-  const STORE_KEY = "beyond-images-demo-curation-v1";
+  const STORE_KEY = "beyond-images-demo-curation-v2";
+  const SETTINGS_KEY = "beyond-images-demo-settings-v1";
   const THEME_KEY = "beyond-images-demo-theme";
 
-  let curation = load();
+  let curation = load(STORE_KEY);
+  let settings = Object.assign({ annotator: "", autoSave: true }, load(SETTINGS_KEY));
   let idx = 0;
   let filter = "All";
   let dirty = false;
+  let showRemoved = true;
+  let renderedQid = null;
 
-  function load() {
-    try { return JSON.parse(localStorage.getItem(STORE_KEY)) || {}; }
+  function load(key) {
+    try { return JSON.parse(localStorage.getItem(key)) || {}; }
     catch { return {}; }
   }
   function persist() { localStorage.setItem(STORE_KEY, JSON.stringify(curation)); }
+  function persistSettings() { localStorage.setItem(SETTINGS_KEY, JSON.stringify(settings)); }
   function cur(qid) {
-    if (!curation[qid]) curation[qid] = { verdict: null, reason: null, notes: "", removed_images: [], last_updated: null };
+    if (!curation[qid]) {
+      curation[qid] = {
+        verdict: null, reason: null, notes: "", removed_images: [],
+        edited_text: null, llm_model: "None", llm_output: "",
+        annotator: "", last_updated: null, modified: false,
+      };
+    }
     return curation[qid];
+  }
+  function isModified(qid) {
+    const r = curation[qid];
+    return !!(r && (r.verdict || r.notes || r.edited_text !== null ||
+      (r.removed_images || []).length || (r.llm_output || "").trim()));
   }
 
   const $ = (id) => document.getElementById(id);
@@ -292,6 +350,26 @@ kbd {
     el._t = setTimeout(() => el.classList.remove("show"), 1600);
   }
 
+  function summaryText(entity) {
+    const record = curation[entity.qid];
+    return (record && record.edited_text !== null && record.edited_text !== undefined)
+      ? record.edited_text : entity.summary;
+  }
+
+  function captureInputs() {
+    // Stash current form values into the in-memory record so re-renders
+    // (verdict clicks, image removal) never wipe unsaved edits.
+    const entity = visible()[idx];
+    if (!entity || renderedQid !== entity.qid) return;
+    const record = cur(entity.qid);
+    const edited = $("summaryEdit").value;
+    record.edited_text = edited === entity.summary ? null : edited;
+    record.notes = $("notesArea").value;
+    if (record.verdict === "mismatch") record.reason = $("reasonSel").value;
+    record.llm_model = $("llmModelSel").value;
+    record.llm_output = $("llmOutput").value;
+  }
+
   function render() {
     const list = visible();
     if (idx >= list.length) idx = Math.max(0, list.length - 1);
@@ -306,10 +384,18 @@ kbd {
       return `<button class="chip ${filter === f ? "active" : ""}" data-filter="${f}">${f} ${n}</button>`;
     }).join("");
 
+    $("jumpSel").innerHTML = list.map((e, i) =>
+      `<option value="${i}" ${i === idx ? "selected" : ""}>${i + 1}. ${e.name} (${e.qid})</option>`).join("");
+    $("annotatorInput").value = settings.annotator;
+    $("autoSaveChk").checked = settings.autoSave;
+    $("showRemovedChk").checked = showRemoved;
+
     if (!entity) {
       $("infoBar").innerHTML = `<span class="muted">No records match this filter.</span>`;
-      $("summaryBox").textContent = ""; $("capList").innerHTML = ""; $("gallery").innerHTML = "";
+      $("summaryEdit").value = ""; $("charCount").textContent = "";
+      $("capList").innerHTML = ""; $("gallery").innerHTML = "";
       $("galleryTitle").textContent = "Images";
+      renderedQid = null;
       return;
     }
 
@@ -319,12 +405,18 @@ kbd {
       `<span><strong>QID:</strong> ${entity.qid}</span>` +
       `<span><a href="${entity.dbpedia}" target="_blank" rel="noopener">DBpedia</a> · ` +
       `<a href="${entity.wikidata}" target="_blank" rel="noopener">Wikidata</a></span>` +
-      `<span class="spacer">Record ${idx + 1} of ${visible().length}</span>` +
+      `<span class="spacer">Record ${idx + 1} of ${list.length}</span>` +
       (dirty ? `<span class="status-pill">Unsaved changes</span>` : "");
 
-    $("summaryBox").textContent = entity.summary || "(no fused summary)";
+    const text = summaryText(entity);
+    $("summaryEdit").value = text;
+    $("charCount").textContent = `Characters: ${text.length}` +
+      (record.edited_text !== null ? " · edited" : "");
     $("capList").innerHTML = entity.images.map((img) =>
       `<li><span class="cap-id">${img.id}</span>${img.caption || "—"}</li>`).join("");
+
+    $("llmModelSel").value = record.llm_model || "None";
+    $("llmOutput").value = record.llm_output || "";
 
     document.querySelectorAll(".verdict-btn").forEach((btn) => {
       btn.classList.toggle("selected", btn.dataset.verdict === record.verdict);
@@ -333,10 +425,13 @@ kbd {
     $("reasonSel").value = record.reason || "wrong_entity";
     $("notesArea").value = record.notes || "";
 
-    $("galleryTitle").textContent = `Images · ${entity.name} (${entity.images.length})`;
     const removed = new Set(record.removed_images);
-    $("gallery").innerHTML = entity.images.map((img, i) => `
-      <div class="tile ${removed.has(img.id) ? "removed" : ""}" data-i="${i}">
+    const tiles = entity.images
+      .map((img, i) => ({ img, i }))
+      .filter(({ img }) => showRemoved || !removed.has(img.id));
+    $("galleryTitle").textContent = `Images · ${entity.name} (${tiles.length}/${entity.images.length})`;
+    $("gallery").innerHTML = tiles.map(({ img, i }) => `
+      <div class="tile ${removed.has(img.id) ? "removed" : ""}">
         <div class="imgbox" data-zoom="${i}"><img loading="lazy" src="${img.url}" alt="${img.id}"></div>
         <div class="cap">${img.caption || ""}</div>
         <div class="row">
@@ -346,16 +441,18 @@ kbd {
       </div>`).join("");
 
     $("prevBtn").disabled = idx <= 0;
-    $("nextBtn").disabled = idx >= visible().length - 1;
+    $("nextBtn").disabled = idx >= list.length - 1;
+    renderedQid = entity.qid;
   }
 
   function save(showToast = true) {
     const entity = visible()[idx];
     if (!entity) return;
+    captureInputs();
     const record = cur(entity.qid);
-    record.notes = $("notesArea").value;
-    if (record.verdict === "mismatch") record.reason = $("reasonSel").value;
-    else record.reason = null;
+    if (record.verdict !== "mismatch") record.reason = null;
+    if (settings.annotator) record.annotator = settings.annotator;
+    record.modified = isModified(entity.qid);
     record.last_updated = new Date().toISOString();
     persist();
     dirty = false;
@@ -364,7 +461,8 @@ kbd {
   }
 
   function nav(delta) {
-    if (dirty) save(false);
+    if (dirty && settings.autoSave) save(false);
+    else captureInputs();
     const n = visible().length;
     idx = Math.max(0, Math.min(n - 1, idx + delta));
     render();
@@ -372,16 +470,18 @@ kbd {
 
   document.addEventListener("click", (event) => {
     const chip = event.target.closest("[data-filter]");
-    if (chip) { filter = chip.dataset.filter; idx = 0; render(); return; }
+    if (chip) { captureInputs(); filter = chip.dataset.filter; idx = 0; render(); return; }
     const verdictBtn = event.target.closest(".verdict-btn");
     if (verdictBtn) {
       const entity = visible()[idx]; if (!entity) return;
+      captureInputs();
       cur(entity.qid).verdict = verdictBtn.dataset.verdict;
       dirty = true; render(); return;
     }
     const removeBtn = event.target.closest("[data-remove]");
     if (removeBtn) {
       const entity = visible()[idx]; if (!entity) return;
+      captureInputs();
       const record = cur(entity.qid);
       const id = removeBtn.dataset.remove;
       const set = new Set(record.removed_images);
@@ -402,30 +502,70 @@ kbd {
   $("lightbox").addEventListener("click", () => $("lightbox").classList.remove("open"));
   $("prevBtn").addEventListener("click", () => nav(-1));
   $("nextBtn").addEventListener("click", () => nav(1));
+  $("saveBtn").addEventListener("click", () => save());
   $("saveNextBtn").addEventListener("click", () => { save(); nav(1); });
-  $("notesArea").addEventListener("input", () => { dirty = true; });
+  ["notesArea", "summaryEdit", "llmOutput"].forEach((id) =>
+    $(id).addEventListener("input", () => {
+      dirty = true;
+      if (id === "summaryEdit") {
+        $("charCount").textContent = `Characters: ${$("summaryEdit").value.length}`;
+      }
+    }));
   $("reasonSel").addEventListener("change", () => { dirty = true; });
+  $("llmModelSel").addEventListener("change", () => { dirty = true; });
+  $("jumpSel").addEventListener("change", (event) => {
+    if (dirty && settings.autoSave) save(false);
+    else captureInputs();
+    idx = Number(event.target.value); render();
+  });
+  $("annotatorInput").addEventListener("change", (event) => {
+    settings.annotator = event.target.value.trim(); persistSettings();
+  });
+  $("autoSaveChk").addEventListener("change", (event) => {
+    settings.autoSave = event.target.checked; persistSettings();
+  });
+  $("showRemovedChk").addEventListener("change", (event) => {
+    captureInputs(); showRemoved = event.target.checked; render();
+  });
 
-  $("exportBtn").addEventListener("click", () => {
+  function exportJson(onlyModified) {
     save(false);
     const out = {};
-    DATA.forEach((e) => { if (curation[e.qid]) out[e.name] = { entity_qid: e.qid, _curation: curation[e.qid] }; });
+    DATA.forEach((e) => {
+      if (onlyModified && !isModified(e.qid)) return;
+      const record = curation[e.qid] || cur(e.qid);
+      out[e.name.replace(/ /g, "_")] = {
+        entity_name: e.name.replace(/ /g, "_"),
+        entity_qid: e.qid,
+        dbpedia_url: e.dbpedia,
+        wikidata_url: e.wikidata,
+        images: { images_t5_descriptions: summaryText(e) },
+        _curation: {
+          verdict: record.verdict, reason: record.reason, notes: record.notes,
+          removed_images: record.removed_images, annotator: record.annotator || "",
+          last_updated: record.last_updated, modified: isModified(e.qid),
+        },
+      };
+    });
     const blob = new Blob([JSON.stringify(out, null, 2)], { type: "application/json" });
     const a = document.createElement("a");
     a.href = URL.createObjectURL(blob);
-    a.download = "dataset_curated_demo.json";
+    a.download = onlyModified ? "dataset_modified_only.json" : "dataset_curated_export.json";
     a.click();
     URL.revokeObjectURL(a.href);
-    toast("Exported curation JSON");
-  });
+    toast(onlyModified ? "Exported modified records" : "Exported full curated dataset");
+  }
+  $("exportModBtn").addEventListener("click", () => exportJson(true));
+  $("exportAllBtn").addEventListener("click", () => exportJson(false));
 
   $("resetBtn").addEventListener("click", () => {
-    if (!confirm("Clear all demo verdicts and notes?")) return;
+    if (!confirm("Clear all demo verdicts, edits, and notes?")) return;
     curation = {}; persist(); dirty = false; idx = 0; filter = "All"; render();
   });
 
   document.addEventListener("keydown", (event) => {
     const inInput = ["INPUT", "TEXTAREA", "SELECT"].includes(event.target.tagName);
+    if (event.ctrlKey && event.key === "Enter") { event.preventDefault(); save(); nav(1); return; }
     if (event.ctrlKey && event.key.toLowerCase() === "s") { event.preventDefault(); save(); return; }
     if (event.key === "Escape") { $("lightbox").classList.remove("open"); return; }
     if (inInput) return;
@@ -434,10 +574,12 @@ kbd {
     else if (event.key.toLowerCase() === "a") setVerdict("match");
     else if (event.key.toLowerCase() === "d") setVerdict("mismatch");
     else if (event.key.toLowerCase() === "u") setVerdict("uncertain");
+    else if (event.key.toLowerCase() === "g") { event.preventDefault(); $("jumpSel").focus(); }
   });
 
   function setVerdict(v) {
     const entity = visible()[idx]; if (!entity) return;
+    captureInputs();
     cur(entity.qid).verdict = v;
     dirty = true; render();
   }
