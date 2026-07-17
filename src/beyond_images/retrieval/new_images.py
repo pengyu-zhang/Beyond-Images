@@ -82,7 +82,8 @@ def _page_images_api(session, title: str, timeout: float) -> list[dict[str, Any]
                 "action": "query",
                 "titles": "|".join(chunk),
                 "prop": "imageinfo",
-                "iiprop": "url|extmetadata",
+                "iiprop": "url|size|extmetadata",
+                "iiurlwidth": 800,  # rasterised thumb (SVG logos become PNG)
                 "format": "json",
             },
             timeout=timeout,
@@ -93,6 +94,8 @@ def _page_images_api(session, title: str, timeout: float) -> list[dict[str, Any]
             url = info.get("url")
             if not url or not url.lower().endswith((".jpg", ".jpeg", ".png", ".gif", ".svg")):
                 continue
+            if info.get("width", 0) < 80 or info.get("height", 0) < 80:
+                continue  # UI icons and decorations
             meta = info.get("extmetadata", {})
             summary = {
                 key: (meta.get(source, {}) or {}).get("value", "")
@@ -108,6 +111,7 @@ def _page_images_api(session, title: str, timeout: float) -> list[dict[str, Any]
                 {
                     "page_url": info.get("descriptionurl", url),
                     "image_url": url,
+                    "download_url": info.get("thumburl") or url,
                     "summary": summary,
                 }
             )
@@ -220,9 +224,11 @@ def crawl_new_images(
                 "image_url": info["image_url"],
                 "summary": info["summary"],
             }
+            if info.get("download_url") and info["download_url"] != info["image_url"]:
+                record["download_url"] = info["download_url"]
             if download and info["image_url"]:
                 try:
-                    resp = session.get(info["image_url"], timeout=timeout)
+                    resp = session.get(info.get("download_url") or info["image_url"], timeout=timeout)
                     resp.raise_for_status()
                     (images_dir / f"{qid}_{idx}.jpg").write_bytes(resp.content)
                 except Exception:
