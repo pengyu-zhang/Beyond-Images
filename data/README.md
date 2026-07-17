@@ -13,6 +13,7 @@ GitHub Release asset:
 | --- | --- |
 | Zenodo (primary) | <https://doi.org/10.5281/zenodo.14847095> |
 | GitHub Release (mirror) | `img_text_summary.zip` attached to release `v1.0` |
+| Hugging Face (Parquet + viewer) | <https://huggingface.co/datasets/pengyu3/beyond-images-enriched> |
 
 ```bash
 bash scripts/prepare_data.sh          # downloads (~128 MB), verifies MD5, extracts
@@ -21,6 +22,11 @@ bash scripts/prepare_data.sh          # downloads (~128 MB), verifies MD5, extra
 `data/sample/img_text_summary.zip` (bundled, 4.4 MB) contains the two MKG-W
 caption files used by the smoke test; `scripts/prepare_data.sh --sample`
 extracts just this file.
+
+The Hugging Face mirror additionally provides the data as flat Parquet
+tables (`captions`, `entities`, `image_metadata` configs) loadable with
+`datasets.load_dataset`; `tools/hf/convert_to_parquet.py` regenerates them
+from the released zip.
 
 MD5 checksums:
 

@@ -90,11 +90,18 @@ bash scripts/smoke_test.sh
 
 The enriched datasets (per-image captions and per-entity descriptions for
 MKG-W, MKG-Y, DB15K) are released on
-[Zenodo](https://doi.org/10.5281/zenodo.14847095) (CC-BY-4.0) and mirrored
-as a GitHub Release asset:
+[Zenodo](https://doi.org/10.5281/zenodo.14847095) (CC-BY-4.0), mirrored as
+a GitHub Release asset, and hosted on
+[Hugging Face](https://huggingface.co/datasets/pengyu3/beyond-images-enriched)
+with a browsable data viewer:
 
 ```bash
 bash scripts/prepare_data.sh       # download (~128 MB), verify MD5, extract
+```
+
+```python
+from datasets import load_dataset   # or load directly from the Hub
+captions = load_dataset("pengyu3/beyond-images-enriched", "captions")
 ```
 
 Re-running the pipeline from scratch additionally needs the source MMKG
