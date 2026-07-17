@@ -40,7 +40,7 @@ def _quantization_kwargs(quantization: str, dtype: str) -> dict:
             ),
             "device_map": "auto",
         }
-    return {"torch_dtype": getattr(torch, dtype), "device_map": "auto"}
+    return {"dtype": getattr(torch, dtype), "device_map": "auto"}
 
 
 class Fuser:
@@ -75,7 +75,7 @@ class Seq2SeqFuser(Fuser):
         self.tokenizer = AutoTokenizer.from_pretrained(model_name)
         kwargs = _quantization_kwargs(self.cfg.get("quantization", "none"), self.cfg.get("dtype", "float32"))
         if self.device == "cpu":
-            kwargs = {"torch_dtype": torch.float32}
+            kwargs = {"dtype": torch.float32}
         self.model = AutoModelForSeq2SeqLM.from_pretrained(model_name, **kwargs)
         if kwargs.get("device_map") is None:
             self.model.to(self.device)

@@ -33,7 +33,7 @@ def _model_kwargs(quantization: str, dtype: str, device: str) -> dict:
         )
         kwargs["device_map"] = "auto"
     else:
-        kwargs["torch_dtype"] = getattr(torch, dtype) if device != "cpu" else torch.float32
+        kwargs["dtype"] = getattr(torch, dtype) if device != "cpu" else torch.float32
         kwargs["device_map"] = "auto" if device != "cpu" else None
     return kwargs
 
