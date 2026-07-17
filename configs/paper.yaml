@@ -1,0 +1,53 @@
+# Faithful to the paper's description (Sections 3.2-3.3).
+# Main configuration reported in the paper: blip2-flan-t5-xxl captions
+# fused by Mistral-7B-Instruct-v0.3 with the exact prompt from Section 3.3.
+# The paper does not specify a decoding strategy; deterministic beam search
+# is used here so results are reproducible (recorded in REFACTORING_NOTES).
+#
+# Paper alternatives (Table 5), switchable via --set:
+#   captioning: --set captioning.backend=git  --set captioning.model=microsoft/git-large-coco
+#               --set captioning.backend=llava --set captioning.model=llava-hf/llava-1.5-7b-hf
+#   fusion:     --set fusion.backend=seq2seq --set fusion.model=google/flan-t5-base
+#               --set fusion.model=meta-llama/Llama-3.1-8B-Instruct
+
+run:
+  seed: 42
+  device: auto
+  tf32: false
+  output_root: outputs
+
+retrieval:
+  dbpedia_lookup: json
+  wikipedia_lookup: api
+  max_workers: 10
+  timeout: 20
+  retries: 3
+  fuzzy_threshold: 0.8
+  max_images_per_entity: 0
+
+captioning:
+  backend: blip2
+  model: Salesforce/blip2-flan-t5-xxl
+  quantization: none          # set 8bit/4bit to fit consumer GPUs
+  dtype: float16
+  batch_size: 16
+  max_new_tokens: 100         # paper: max generated text length 100
+  prompt: "Describe the scene, objects, colors, and other details in detail."
+
+fusion:
+  backend: causal
+  model: mistralai/Mistral-7B-Instruct-v0.3
+  quantization: none
+  dtype: bfloat16
+  max_descriptions_per_entity: 500   # not stated in the paper; original code value
+  priority_index: 0
+  deterministic: true                # not stated in the paper; chosen for reproducibility
+  num_beams: 1
+  max_new_tokens: 512
+
+embedding:
+  model: bert-base-uncased           # paper: BERT-base-uncased embeddings
+  batch_size: 256
+  text_key: auto
+  tokens_model: bert-base-uncased
+  max_token_length: 512

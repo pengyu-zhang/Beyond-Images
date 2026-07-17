@@ -1,0 +1,51 @@
+# Recommended configuration: runs the full pipeline out of the box on a
+# consumer GPU (8 GB VRAM) with no gated-model access required, while keeping
+# the framework identical to the paper (retrieve -> caption -> fuse -> embed).
+#
+# For paper-best quality on larger GPUs, use configs/paper.yaml or override:
+#   --set captioning.model=Salesforce/blip2-flan-t5-xxl --set captioning.quantization=4bit
+#   --set fusion.backend=causal --set fusion.model=mistralai/Mistral-7B-Instruct-v0.3 \
+#   --set fusion.quantization=4bit          (Mistral/Llama are gated; needs HF token)
+
+run:
+  seed: 42
+  device: auto
+  tf32: true                 # faster matmul on Ampere+; no quality impact observed
+  output_root: outputs
+
+retrieval:
+  dbpedia_lookup: json       # DBpedia JSON endpoint (more robust than HTML scraping)
+  wikipedia_lookup: api      # MediaWiki API (structured metadata incl. author/date/license)
+  max_workers: 10
+  timeout: 20
+  retries: 3
+  fuzzy_threshold: 0.8
+  max_images_per_entity: 0
+
+captioning:
+  backend: blip2
+  model: Salesforce/blip2-flan-t5-xl   # fits 8 GB GPUs with 8-bit quantization
+  quantization: 8bit                   # none | 8bit | 4bit (needs bitsandbytes)
+  dtype: float16
+  batch_size: 8
+  max_new_tokens: 100
+  prompt: "Describe the scene, objects, colors, and other details in detail."
+
+fusion:
+  backend: seq2seq
+  model: google/flan-t5-base           # ungated, fast; paper Table 5 shows it already
+  quantization: none                   #   improves over the baseline
+  dtype: float32
+  max_input_tokens: 1024
+  max_descriptions_per_entity: 500
+  priority_index: 0
+  deterministic: true
+  num_beams: 4
+  max_new_tokens: 384
+
+embedding:
+  model: bert-base-uncased
+  batch_size: 256
+  text_key: auto
+  tokens_model: bert-base-uncased
+  max_token_length: 512

@@ -1,0 +1,45 @@
+# Minimal configuration for the smoke test: small ungated models only,
+# finishes in minutes on GPU or CPU. Not intended for producing results.
+
+run:
+  seed: 42
+  device: auto
+  tf32: true
+  output_root: outputs/smoke
+
+retrieval:
+  dbpedia_lookup: json
+  wikipedia_lookup: api
+  max_workers: 4
+  timeout: 20
+  retries: 2
+  fuzzy_threshold: 0.8
+  max_images_per_entity: 3
+
+captioning:
+  backend: blip
+  model: Salesforce/blip-image-captioning-base   # ~250M params
+  quantization: none
+  dtype: float16
+  batch_size: 4
+  max_new_tokens: 50
+  prompt: ""
+
+fusion:
+  backend: seq2seq
+  model: google/flan-t5-base
+  quantization: none
+  dtype: float32
+  max_input_tokens: 1024
+  max_descriptions_per_entity: 100
+  priority_index: 0
+  deterministic: true
+  num_beams: 4
+  max_new_tokens: 256
+
+embedding:
+  model: bert-base-uncased
+  batch_size: 64
+  text_key: auto
+  tokens_model: bert-base-uncased
+  max_token_length: 512

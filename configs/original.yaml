@@ -1,0 +1,46 @@
+# Reproduces the algorithmic behaviour of the original (archived) scripts.
+# Serves as the regression baseline: same models, same prompts, same
+# priority/cap logic, same sampling-based decoding as original_code/.
+
+run:
+  seed: 42
+  device: auto          # auto | cuda | cpu
+  tf32: false           # original scripts never enabled TF32
+  output_root: outputs
+
+retrieval:
+  dbpedia_lookup: html      # original scripts scraped DBpedia HTML pages
+  wikipedia_lookup: html    # original scripts scraped Wikidata/Wikipedia HTML
+  max_workers: 10
+  timeout: 20
+  retries: 3
+  fuzzy_threshold: 0.8      # SequenceMatcher threshold from 1.3_error_and_fail_log.py
+  max_images_per_entity: 0  # no cap
+
+captioning:
+  backend: blip2
+  model: Salesforce/blip2-flan-t5-xxl    # as in 4.x scripts (needs ~24 GB VRAM,
+  quantization: none                     # or 8bit/4bit on smaller GPUs)
+  dtype: float16
+  batch_size: 100                        # original batch size (sized for H100)
+  max_new_tokens: 100
+  prompt: "Describe the scene, objects, colors, and other details in detail."
+
+fusion:
+  backend: causal
+  model: mistralai/Mistral-7B-Instruct-v0.3   # best-performing LLM in the paper
+  quantization: none                          # original loaded full bfloat16
+  dtype: bfloat16
+  max_descriptions_per_entity: 500
+  priority_index: 0            # first --inputs file fills the cap first
+  deterministic: false         # original sampled (temperature 0.6, top_p 0.9)
+  temperature: 0.6
+  top_p: 0.9
+  max_new_tokens: 512
+
+embedding:
+  model: bert-base-uncased     # via sentence-transformers, as in 5.5
+  batch_size: 256
+  text_key: auto               # fused summary if present, else merged captions
+  tokens_model: bert-base-uncased
+  max_token_length: 512
