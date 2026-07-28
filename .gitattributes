@@ -1,0 +1,2 @@
+# Force LF line endings for shell scripts regardless of core.autocrlf
+*.sh text eol=lf

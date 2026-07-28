@@ -1,0 +1,31 @@
+# Paper PDF (local reference only, never committed)
+Beyond_Images.pdf
+
+# Data (bodies are distributed via Zenodo / GitHub Release, not git)
+data/raw/
+data/processed/
+data/sample/extracted/
+
+# Pipeline outputs
+outputs/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+.venv/
+venv/
+
+# Tool caches
+.cache/
+settings.json
+dataset_curated.json
+dataset_modified_only.json
+dataset_curated_export.json
+
+# Editors / OS
+.vscode/
+.idea/
+Thumbs.db
+.DS_Store
