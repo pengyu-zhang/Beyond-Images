@@ -39,6 +39,12 @@ License: the released enriched data is CC-BY-4.0. Captions were generated
 from images collected from Wikipedia/Wikimedia and the source MMKG datasets;
 retain their original attribution requirements when reusing.
 
+The image files themselves (MMRNS originals, DB15K search-engine images,
+and the Wikipedia images we crawled) are not redistributed; see the
+source-dataset instructions below to re-download them, and
+`new_images_metadata.json` for the URL, author and license of every
+crawled Wikipedia image.
+
 ## Source MMKG datasets (needed only to re-run the pipeline from scratch)
 
 To regenerate everything (crawl + caption) you need the source datasets.
@@ -65,7 +71,21 @@ bash scripts/run_pipeline.sh links-resolve \
 
 ### DB15K
 
-From the [mmkb repository](https://github.com/mniepert/mmkb) (BSD-3):
+From the [mmkb repository](https://github.com/mniepert/mmkb) (BSD-3).
+
+DB15K has no image URL list of its own. mmkb only publishes URL lists for
+FB15K (`image-graph_urls.tar.gz`, Dropbox link in the mmkb README), with
+one file per search engine: `URLS_google.txt`, `URLS_bing.txt`,
+`URLS_yahoo.txt`. Each row is `<image url><TAB><freebase id>/<index>`.
+DB15K entities are mapped onto those Freebase IDs through
+`DB15K_SameAsLink.txt` (steps 1-2 below). Download and extract the
+archive into `data/raw/DB15K/urls/`.
+
+We do not redistribute the images themselves: they are search-engine
+results with no usable license information, and mmkb itself only
+releases URLs for the same reason. Expect a sizeable share of dead links
+(the lists date from 2018); `db15k-download` skips failures, logs them to
+the journal, and can be re-run to resume.
 
 ```bash
 # 1. SameAsLink -> DBpedia/mid TSV
@@ -75,7 +95,8 @@ bash scripts/run_pipeline.sh links-transform \
 bash scripts/run_pipeline.sh links-resolve \
     --input data/raw/DB15K/ent_links_raw.tsv \
     --journal outputs/DB15K/links.jsonl --output data/raw/DB15K/ent_links.tsv
-# 3. Download original images from the mmkb URL lists (URLS_google.txt, ...)
+# 3. Download original images from the mmkb FB15K URL lists
+#    (data/raw/DB15K/urls/URLS_{google,bing,yahoo}.txt, see above)
 bash scripts/run_pipeline.sh db15k-download \
     --url-dir data/raw/DB15K/urls --output data/raw/DB15K/images_by_provider \
     --journal outputs/DB15K/downloads.jsonl
